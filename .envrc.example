@@ -1,0 +1,5 @@
+export KEY=your_key_here
+export SECRET=your_secret_here
+export TOKEN=your_token_here
+export SECRET_TOKEN=your_secret_token_here
+export USERNAME=your_username

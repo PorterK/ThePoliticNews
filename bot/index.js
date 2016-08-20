@@ -2,6 +2,7 @@
 
 const connect = require('./connect');
 const colors = require('colors');
+const workers = require('./workers');
 
 module.exports = {
   start(key, secret, token, tokenSecret){
@@ -10,6 +11,7 @@ module.exports = {
       console.log(important('Starting Twitter bot...'));
 
       let bot = connect.connect(key, secret, token, tokenSecret);
+
 
       let error = function (err, response, body) {
         console.log(`An error has occurred, this is all we could gather... \n ${body}`);
@@ -29,5 +31,10 @@ module.exports = {
       bot.getUser({
         screen_name: process.env.USERNAME
       }, error, successFindUser);
+
+
+      workers.beingWork(bot);
+
+      return bot;
   }
 }

@@ -28,6 +28,12 @@ Next run
 $ npm install && node index.js
 ```
 
+after the first time, you can just run
+
+```sh
+$ node index.js
+```
+
 That's it!
 
 ### Notes

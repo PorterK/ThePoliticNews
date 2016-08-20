@@ -1,6 +1,7 @@
 # ThePoliticNews Bot
 
 A bot showcasing the current political buffoonery in the United States
+You can find it on Twitter, [@ThePoliticNews](https://twitter.com/ThePoliticNews)
 
 >A typical vice of American politics is the avoidance of saying anything real on real issues.
 

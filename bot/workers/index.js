@@ -7,11 +7,22 @@ module.exports = {
 
     let message = colors.green;
 
-    let error = function (err, response, body) {
-      console.log(`An error has occurred, this is all we could gather... \n ${body}`);
-    };
     let success = function (json) {
         let data = JSON.parse(json);
+
+        let error = function (err, response, body) {
+          console.log(`An error has occurred, this is all we could gather... \n ${body}`);
+
+          let error = JSON.parse(body);
+
+          if(error.errors[0].code == 187){
+            postTweet(getRandomTweet()); //if a duplicate arrises, just look for another tweet
+          }
+        };
+
+        let success = function(tweetText){
+          console.log(message('Tweet posted: \n %s'), tweetText);
+        }
 
         let getRandomTweet = function(){
           let tweet = data.statuses[Math.floor(Math.random() * data.statuses.length)];
@@ -21,19 +32,21 @@ module.exports = {
           return tweetText;
         }
 
-        let tweetText = getRandomTweet();
+        let postTweet = function(tweetText){
 
-        if(tweetText.length > 140){
-            getRandomTweet();
+          if(tweetText.length > 140){
+              tweetText = getRandomTweet();
+          }
+
+          twitter.postTweet({status: tweetText}, error, function(){success(tweetText)});
         }
 
-        twitter.postTweet({status: tweetText}, error, function(){});
+        let tweetText = getRandomTweet();
 
-        console.log(message('Tweet posted: \n %s'), tweetText);
-
+        postTweet(getRandomTweet());
     };
 
-    let work = new Job('0 */40 * * * *',
+    let work = new Job('0 */1 * * * *',
       function(){
         console.log(message('Job started on %s'), new Date());
 
@@ -41,7 +54,7 @@ module.exports = {
           q:'donald trump hillary clinton',
           count:50,
           result_type:'popular'
-        }, error, success)
+        }, function(err, body, response){}, success);
       },
       null,
       true,
